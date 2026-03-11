@@ -8,6 +8,10 @@
 #ifndef INC_SIGNAL_H_
 #define INC_SIGNAL_H_
 
+#include "main.h"
+
+extern const char *litter_names[];
+
 typedef enum
 {
   METAL,
@@ -15,13 +19,12 @@ typedef enum
   GLASS
 } litter_type;
 
-struct start_signal
-{
+typedef struct {
   int speed;
   int duration;
   litter_type litter;
-};
+} start_signal;
 
-start_signal wait_for_start();
+start_signal wait_for_start(void);
 
 #endif /* INC_SIGNAL_H_ */

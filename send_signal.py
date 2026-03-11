@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Command line script to send start_signal struct over UART.
+Command line script to send start_signal struct over USB CDC.
 
-Usage: python send_signal.py --port /dev/ttyUSB0 --duration 1000 --speed 50 --bin metal
+Usage: python send_signal.py --port /dev/ttyACM0 --duration 1000 --speed 50 --bin metal
 """
 
 import argparse
