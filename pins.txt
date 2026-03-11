@@ -1,0 +1,7 @@
+    PIN     MODE        CONNECTION
+
+DC Motor Driver:
+    PA8     TIMER       PWM
+    PB0     GPIO_OUTPUT IN1
+    PB1     GPIO_OUTPUT IN2
+    PB10    GPIO_OUTPUT STANDBY

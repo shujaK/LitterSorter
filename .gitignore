@@ -1,0 +1,29 @@
+# Build output
+Debug/
+Release/
+
+# Object / binary files
+*.o
+*.d
+*.elf
+*.bin
+*.hex
+*.map
+*.list
+
+# STM32CubeIDE project settings (generated locally)
+.settings/
+*.launch
+
+# Eclipse / CubeIDE metadata
+.metadata/
+
+# Temporary / autosave
+*.tmp
+*.bak
+
+# CMake builds (if ever generated)
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
