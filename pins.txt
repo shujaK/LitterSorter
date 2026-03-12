@@ -5,3 +5,8 @@ DC Motor Driver:
     PB0     GPIO_OUTPUT IN1
     PB1     GPIO_OUTPUT IN2
     PB10    GPIO_OUTPUT STANDBY
+
+Servos:
+    PA1     TIM2_CH2    SERVO1_PWM
+    PA2     TIM2_CH3    SERVO2_PWM
+    PA3     TIM2_CH4    SERVO3_PWM
