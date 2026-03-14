@@ -24,6 +24,7 @@
 /* USER CODE BEGIN Includes */
 #include "signal.h"
 #include "pins.h"
+#include "motor.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -103,24 +104,28 @@ int main(void)
   MX_TIM1_Init();
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
+  motor_init(&htim1);
 
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
-  while (1) {
+  while (1){
     start_signal sig = wait_for_start();
 
-    // basic signal test do: python send_signal.py --port <PORT> --duration 1000 --speed 11 --bin metal
-    if (sig.speed == 11 && sig.duration == 11 && sig.litter == METAL) {
+    // basic signal test do: python send_signal.py --port <PORT> --duration 11 --speed 11 --bin metal
+    if (sig.litter == METAL) {
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+      motor_enable(sig.speed, 0);
+
     } else {
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+      motor_stop();
     }
   }
-  /* USER CODE END 3 */
 }
+  /* USER CODE END 3 */
 
 /**
   * @brief System Clock Configuration
@@ -190,9 +195,9 @@ static void MX_TIM1_Init(void)
 
   /* USER CODE END TIM1_Init 1 */
   htim1.Instance = TIM1;
-  htim1.Init.Prescaler = 0;
+  htim1.Init.Prescaler = 83;
   htim1.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim1.Init.Period = 65535;
+  htim1.Init.Period = 49;
   htim1.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim1.Init.RepetitionCounter = 0;
   htim1.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
