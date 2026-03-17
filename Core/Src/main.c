@@ -25,6 +25,7 @@
 #include "signal.h"
 #include "pins.h"
 #include "motor.h"
+#include "servo.h"
 #include <stdio.h>
 #include <string.h>
 
@@ -105,6 +106,7 @@ int main(void)
   MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
   motor_init(&htim1);
+  init_servos(&htim2);
 
   /* USER CODE END 2 */
 
@@ -118,10 +120,13 @@ int main(void)
     if (sig.litter == METAL) {
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
       motor_enable(sig.speed, 0);
+      open_servo(METAL);
+
 
     } else {
       HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
       motor_stop();
+      close_all_servos();
     }
   }
 }
@@ -268,9 +273,9 @@ static void MX_TIM2_Init(void)
 
   /* USER CODE END TIM2_Init 1 */
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 0;
+  htim2.Init.Prescaler = 83;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 4294967295;
+  htim2.Init.Period = 19999;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
   if (HAL_TIM_PWM_Init(&htim2) != HAL_OK)
