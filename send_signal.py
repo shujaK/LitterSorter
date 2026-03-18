@@ -14,7 +14,7 @@ import serial
 LITTER_TYPES = {
     "metal": 0,
     "plastic": 1,
-    "glass": 2,
+    "paper": 2,
 }
 
 
@@ -41,9 +41,9 @@ def parse_args():
     )
     parser.add_argument(
         "--bin", "-b",
-        choices=["metal", "plastic", "glass"],
+        choices=["metal", "plastic", "paper"],
         required=True,
-        help="Litter type: metal, plastic, or glass"
+        help="Litter type: metal, plastic, or paper"
     )
     parser.add_argument(
         "--baudrate", "-r",

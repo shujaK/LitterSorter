@@ -16,7 +16,7 @@ typedef enum
 {
   METAL,
   PLASTIC,
-  GLASS
+  PAPER
 } litter_type;
 
 typedef struct {

@@ -13,7 +13,7 @@ extern volatile uint8_t cdc_rx_buffer[64];
 extern volatile uint32_t cdc_rx_len;
 extern volatile uint8_t cdc_rx_ready;
 
-const char* litter_names[] = { "METAL", "PLASTIC", "GLASS" };
+const char* litter_names[] = { "METAL", "PLASTIC", "PAPER" };
 
 start_signal
 wait_for_start(void)

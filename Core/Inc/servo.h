@@ -11,13 +11,6 @@
 #include "signal.h"
 #include "pins.h"
 
-#define SERVO_MIN 500   // 0.5ms pulse (0 degrees)
-#define SERVO_MID 1500  // 1.5ms pulse (90 degrees)
-#define SERVO_MAX 2500  // 2.5ms pulse (180 degrees)
-
-#define CLOSE SERVO_MIN
-#define OPEN  SERVO_MAX
-
 void init_servos(TIM_HandleTypeDef *tim);
 
 void open_servo(litter_type type);
