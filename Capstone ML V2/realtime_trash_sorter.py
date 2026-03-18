@@ -9,12 +9,14 @@ from torchvision import transforms
 from torch import nn
 import serial
 
+from send_signal import pack_start_signal
+
 
 MODEL_PATH = Path("models/trash_classifier.pth")
 
 # Adjust this to the correct USB CDC device for STM32 board.
 #something like "/dev/tty.usbmodemXXXX".
-SERIAL_PORT = "/dev/tty.usbmodemXXXX"
+SERIAL_PORT = "COM6"
 BAUD_RATE = 115200
 
 # Map predicted labels to single-character commands.
@@ -22,6 +24,13 @@ LABEL_TO_CHAR: Dict[str, str] = {
     "metal": "M",
     "paper": "A",   #'A' for 'paper'
     "plastic": "P",
+}
+
+# Map predicted labels to enum values for binary protocol
+LABEL_TO_ENUM: Dict[str, int] = {
+    "metal": 0,
+    "paper": 2,
+    "plastic": 1,
 }
 
 
@@ -53,18 +62,23 @@ def open_serial() -> Optional[serial.Serial]:
 
 def send_serial_command(ser: Optional[serial.Serial], label: str):
     ch = LABEL_TO_CHAR.get(label)
-    if ch is None:
+    litter_enum = LABEL_TO_ENUM.get(label)
+    
+    if ch is None or litter_enum is None:
         return
-    msg = (ch + "\n").encode("ascii")
+    
+    # Pack binary signal: speed=50, duration=1000 (can be adjusted)
+    binary_packet = pack_start_signal(speed=50, duration=1000, litter=litter_enum)
+    
     if ser is not None and ser.is_open:
         try:
-            ser.write(msg)
+            bytes_sent = ser.write(binary_packet)
             ser.flush()
-            print(f"Sent over serial: {msg!r}")
+            print(f"Sent signal for {label} over serial: {binary_packet.hex()} ({bytes_sent} bytes)")
         except Exception as e:
             print(f"Error sending over serial: {e}")
     else:
-        print(f"(Serial closed) Would send: {msg!r}")
+        print(f"(Serial closed) Would send signal for {label}: {binary_packet.hex()}")
 
 
 def main():
@@ -78,7 +92,7 @@ def main():
         ]
     )
 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     if not cap.isOpened():
         print("Error: could not open webcam.")
         return
