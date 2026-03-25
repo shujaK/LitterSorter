@@ -68,7 +68,7 @@ def send_serial_command(ser: Optional[serial.Serial], label: str):
         return
     
     # Pack binary signal: speed=50, duration=1000 (can be adjusted)
-    binary_packet = pack_start_signal(speed=50, duration=1000, litter=litter_enum)
+    binary_packet = pack_start_signal(speed=75, duration=10000, litter=litter_enum)
     
     if ser is not None and ser.is_open:
         try:
