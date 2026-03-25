@@ -119,23 +119,28 @@ main (void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   HAL_GPIO_WritePin (GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
+  litter_type last_type = METAL;
+
+  // basic signal test do: python send_signal.py --port <PORT> --duration 11 --speed 11 --bin metal
   while (1)
     {
       start_signal sig = wait_for_start ();
+      if (sig.litter != last_type)
+	close_all_servos ();
 
-      // basic signal test do: python send_signal.py --port <PORT> --duration 11 --speed 11 --bin metal
-      if (sig.litter == METAL)
+      motor_enable (sig.speed, 0);
+      open_servo (sig.litter);
+      if (sig.duration > 0)
 	{
-	  HAL_GPIO_WritePin (GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
-	  motor_enable (sig.speed, 0);
-	  open_servo (METAL);
+	  HAL_Delay (sig.duration);
+	  motor_stop ();
 	}
       else
 	{
-	  HAL_GPIO_WritePin (GPIOC, GPIO_PIN_13, GPIO_PIN_SET);
-	  motor_stop ();
-	  close_all_servos ();
+	  HAL_Delay (1000);
 	}
+
+      last_type = sig.litter;
     }
 }
 /* USER CODE END 3 */
